@@ -9,7 +9,7 @@ from sqlalchemy import create_engine, func, desc, inspect
 from flask import Flask, jsonify
 
 
-#Database Setup
+#database Setup
 engine = create_engine("sqlite:///Resources/hawaii.sqlite")
 
 #reflect an existing database into a new model
@@ -18,14 +18,14 @@ Base = automap_base()
 #reflect the tables
 Base.prepare(engine, reflect=True)
 
-#Save reference to the table
+#save reference to the table
 Measurement = Base.classes.measurement
 Station = Base.classes.station
 
-#Flask Setup
+#flask Setup
 app = Flask(__name__)
 
-#Flask Routes
+#flask Routes
 @app.route("/")
 def welcome():
     """List all available api routes."""

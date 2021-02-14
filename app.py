@@ -43,7 +43,10 @@ def precipitation():
     #connect to database
     session = Session(engine)
 
-    results = session.query(Measurement.date, Measurement.prcp).all()
+    latest_date = session.query(Measurement.date).order_by(Measurement.date.desc()).first()[0]
+    year_ago = dt.datetime.strptime(latest_date, '%Y-%m-%d') - dt.timedelta(days=365)
+
+    results = session.query(Measurement.date, Measurement.prcp).filter(Measurement.date >= year_ago).all()
 
     session.close()
 
@@ -68,9 +71,8 @@ def stats():
 def tobs():
     session = Session(engine)
 
-    latest_date = session.query(Measurement.date).order_by(Measurement.date.desc()).first()
-
-    latest_date_dt = dt.date(2017, 8, 23)
+    latest_date = session.query(Measurement.date).order_by(Measurement.date.desc()).first()[0]
+    latest_date_dt = dt.datetime.strptime(latest_date, '%Y-%m-%d')
     
     year_ago = latest_date_dt - dt.timedelta(days=365)
     
